@@ -1,6 +1,6 @@
 ## Overview
 
-This Flask project contains a simple user management functionality to demonstrate the use of py.test.
+This Flask application contains the basic user management functionality (register, login, logout) to demonstrate the use of py.test.
 
 ## Motivation
 
@@ -16,6 +16,11 @@ In the top-level directory:
 ## Key Python Modules Used
 
 - Flask: micro-framework for web application development
+- Jinga2 - templating engine
+- SQLAlchemy - ORM (Object Relational Mapper)
+- Flask-Bcrypt - password hashing
+- Flask-Login - support for user management
+- Flask-WTF - simplifies forms
 
 This application is written using Python 3.6.
 

@@ -10,9 +10,8 @@ __pycache__/
 .idea/
 
 # Instance Folder - used for configuration parameters
-/web/instance/db_create_full.py
-/web/instance/flask_full.cfg
-/web/instance/*.db
+instance/*_full.py
+instance/*.db
 
 # Initialization file for Postgress Docker Image
 /postgresql/Dockerfile

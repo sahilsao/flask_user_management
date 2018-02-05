@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
+{% set title = 'Flask User Management Example' %}
+
 {% block content %}
-    {% if user.username %}
-        <h3>Welcome {{ user.username }}!</h3>
-    {% else %}
-        <h3>Welcome!</h3>
-    {% endif %}
+    <p>Welcome to the Flask User Management example!</p>
+    <br>
+    <p><em>Need an account? </em><a href="{{ url_for('users.register') }}">Register!</a></p>
+    <p><em>Existing user? </em><a href="{{ url_for('users.login') }}">Login!</a></p>
 {% endblock %}
