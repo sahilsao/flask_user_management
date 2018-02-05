@@ -34,6 +34,11 @@ def profile():
 
 @users_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
+    # If the User is already logged in, don't allow them to try to register
+    if current_user.is_authenticated:
+        flash('Already registered!  Redirecting to your User Profile page...')
+        return redirect(url_for('users.profile'))
+
     form = RegisterForm()
     if request.method == 'POST' and form.validate_on_submit():
         new_user = User(form.email.data, form.password.data)
@@ -48,6 +53,11 @@ def register():
 
 @users_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
+    # If the User is already logged in, don't allow them to try to log in again
+    if current_user.is_authenticated:
+        flash('Already logged in!  Redirecting to your User Profile page...')
+        return redirect(url_for('users.profile'))
+
     form = LoginForm()
     if request.method == 'POST' and form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
