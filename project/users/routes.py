@@ -65,7 +65,7 @@ def login():
             user.authenticated = True
             db.session.add(user)
             db.session.commit()
-            login_user(user)
+            login_user(user, remember=form.remember_me.data)
             flash('Thanks for logging in, {}!'.format(current_user.email))
             return redirect(url_for('users.profile'))
         else:
