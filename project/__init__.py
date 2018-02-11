@@ -4,32 +4,45 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 
 
-################
-#### config ####
-################
+#######################
+#### Configuration ####
+#######################
 
-app = Flask(__name__, instance_relative_config=True)
-app.config.from_pyfile('flask.cfg')
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-
-# Configuration for using Flask-Login module
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "users.login"
-
-from project.models import User
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter(User.id == int(user_id)).first()
+# Create the instances of the Flask extensions (flask-sqlalchemy, flask-login, etc.) in
+# the global scope, but without any arguments passed in.  These instances are not attached
+# to the application at this point.
+db = SQLAlchemy()
+bcrypt = Bcrypt()
+login = LoginManager()
+login.login_view = "users.login"
 
 
-####################
-#### blueprints ####
-####################
+######################################
+#### Application Factory Function ####
+######################################
 
-from project.users.routes import users_blueprint
+def create_app(config_filename):
+    # Create the application instance (app) of the Flask framework
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_pyfile(config_filename)
 
-# register the blueprints
-app.register_blueprint(users_blueprint)
+    # Since the application instance is now created, pass it to each Flask
+    # extension instance to bind it to the Flask application instance (app)
+    db.init_app(app)
+    bcrypt.init_app(app)
+    login.init_app(app)
+
+    # Flask-Login configuration
+    from project.models import User
+
+    @login.user_loader
+    def load_user(user_id):
+        return User.query.filter(User.id == int(user_id)).first()
+
+    # Blueprint(s)
+    from project.users.routes import users_blueprint
+
+    # Register the Blueprint(s)
+    app.register_blueprint(users_blueprint)
+
+    return app
