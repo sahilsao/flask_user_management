@@ -51,6 +51,6 @@ def initialize_extensions(app):
 def register_blueprints(app):
     # Since the application instance is now created, register each Blueprint
     # with the Flask application instance (app)
-    from project.users.routes import users_blueprint
+    from project.users import users_blueprint
 
     app.register_blueprint(users_blueprint)

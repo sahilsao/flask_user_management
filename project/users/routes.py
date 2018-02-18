@@ -2,19 +2,13 @@
 #### imports ####
 #################
 
-from flask import render_template, Blueprint, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_user, current_user, login_required, logout_user
 
+from . import users_blueprint
 from .forms import RegisterForm, LoginForm
 from project.models import User
 from project import db
-
-
-################
-#### config ####
-################
-
-users_blueprint = Blueprint('users', __name__)
 
 
 ################
