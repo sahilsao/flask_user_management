@@ -15,15 +15,10 @@ from project import db
 #### routes ####
 ################
 
-@users_blueprint.route('/')
-def index():
-    return render_template('index.html')
-
-
 @users_blueprint.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html')
+    return render_template('users/profile.html')
 
 
 @users_blueprint.route('/register', methods=['GET', 'POST'])
@@ -42,7 +37,7 @@ def register():
         login_user(new_user)
         flash('Thanks for registering, {}!'.format(new_user.email))
         return redirect(url_for('users.profile'))
-    return render_template('register.html', form=form)
+    return render_template('users/register.html', form=form)
 
 
 @users_blueprint.route('/login', methods=['GET', 'POST'])
@@ -64,7 +59,7 @@ def login():
             return redirect(url_for('users.profile'))
         else:
             flash('ERROR! Incorrect login credentials.')
-    return render_template('login.html', form=form)
+    return render_template('users/login.html', form=form)
 
 
 @users_blueprint.route('/logout')
@@ -76,4 +71,4 @@ def logout():
     db.session.commit()
     logout_user()
     flash('Goodbye!')
-    return redirect(url_for('users.index'))
+    return redirect(url_for('recipes.index'))

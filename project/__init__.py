@@ -51,6 +51,8 @@ def initialize_extensions(app):
 def register_blueprints(app):
     # Since the application instance is now created, register each Blueprint
     # with the Flask application instance (app)
+    from project.recipes import recipes_blueprint
     from project.users import users_blueprint
 
+    app.register_blueprint(recipes_blueprint)
     app.register_blueprint(users_blueprint)
