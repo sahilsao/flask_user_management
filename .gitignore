@@ -23,3 +23,6 @@ instance/*.db
 # Virtual Environment
 /venv/
 
+# pytest files
+.pytest_cache/
+
