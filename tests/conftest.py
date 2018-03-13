@@ -4,43 +4,42 @@ from project.models import User
 
 
 @pytest.fixture(scope='session')
-def app(request):
+def test_client():
     flask_app = create_app('flask_test.cfg')
-    # flask_app.testing = True
+
+    # Flask provides a way to test your application by exposing the Werkzeug test Client
+    # and handling the context locals for you.
+    testing_client = flask_app.test_client()
 
     # Establish an application context before running the tests.
     ctx = flask_app.app_context()
     ctx.push()
 
-    def teardown():
-        ctx.pop()
+    yield testing_client  # this is where the testing happens!
 
-    request.addfinalizer(teardown)
-
-    # Flask provides a way to test your application by exposing the Werkzeug test Client
-    # and handling the context locals for you.
-    return flask_app.test_client()
+    ctx.pop()
 
 
 @pytest.fixture(scope='session')
-def database(app, request):
+def init_database():
     # Create the database and the database table
     db.create_all()
 
     # Insert user data
-    print('Creating new users...')
     user1 = User(email='patkennedy79@gmail.com', plaintext_password='FlaskIsAwesome')
     user2 = User(email='kennedyfamilyrecipes@gmail.com', plaintext_password='PaSsWoRd')
-    user3 = User(email='blaa@blaa.com', plaintext_password='MyFavPassword')
     db.session.add(user1)
     db.session.add(user2)
-    db.session.add(user3)
 
     # Commit the changes for the users
     db.session.commit()
 
-    def teardown():
-        db.drop_all()
+    yield db  # this is where the testing happens!
 
-    request.addfinalizer(teardown)
-    return db
+    db.drop_all()
+
+
+@pytest.fixture(scope='module')
+def new_user():
+    user = User('patkennedy79@gmail.com', 'FlaskIsAwesome')
+    return user

@@ -37,7 +37,7 @@ def register():
         login_user(new_user)
         flash('Thanks for registering, {}!'.format(new_user.email))
         return redirect(url_for('users.profile'))
-    return render_template('users/register.html', form=form)
+    return render_template('users/register.html', form=form), 201
 
 
 @users_blueprint.route('/login', methods=['GET', 'POST'])
@@ -48,17 +48,19 @@ def login():
         return redirect(url_for('users.profile'))
 
     form = LoginForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user and user.is_correct_password(form.password.data):
-            user.authenticated = True
-            db.session.add(user)
-            db.session.commit()
-            login_user(user, remember=form.remember_me.data)
-            flash('Thanks for logging in, {}!'.format(current_user.email))
-            return redirect(url_for('users.profile'))
-        else:
-            flash('ERROR! Incorrect login credentials.')
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user and user.is_correct_password(form.password.data):
+                user.authenticated = True
+                db.session.add(user)
+                db.session.commit()
+                login_user(user, remember=form.remember_me.data)
+                flash('Thanks for logging in, {}!'.format(current_user.email))
+                return redirect(url_for('users.profile'))
+
+        flash('ERROR! Incorrect login credentials.')
     return render_template('users/login.html', form=form)
 
 
