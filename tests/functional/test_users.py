@@ -65,3 +65,52 @@ def test_invalid_login(test_client, init_database):
     assert b"Logout" not in response.data
     assert b"Login" in response.data
     assert b"Register" in response.data
+
+
+def test_valid_registration(test_client, init_database):
+    """
+    GIVEN a Flask application
+    WHEN the /register page is posted to
+    THEN check the response
+    """
+    response = test_client.post('/register',
+                                data=dict(email='patkennedy79@yahoo.com',
+                                          password='FlaskIsGreat',
+                                          confirm='FlaskIsGreat'),
+                                follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Thanks for registering, patkennedy79@yahoo.com!" in response.data
+    assert b"Welcome patkennedy79@yahoo.com!" in response.data
+    assert b"Flask User Management" in response.data
+    assert b"Logout" in response.data
+    assert b"Login" not in response.data
+    assert b"Register" not in response.data
+
+    response = test_client.get('/logout', follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Goodbye!" in response.data
+    assert b"Flask User Management" in response.data
+    assert b"Logout" not in response.data
+    assert b"Login" in response.data
+    assert b"Register" in response.data
+
+
+def test_invalid_registration(test_client, init_database):
+    """
+    GIVEN a Flask application
+    WHEN the /register page is posted to
+    THEN check the response
+    """
+    response = test_client.post('/register',
+                                data=dict(email='patkennedy79@hotmail.com',
+                                          password='FlaskIsGreat',
+                                          confirm='FlskIsGreat'),
+                                follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Thanks for registering, patkennedy79@hotmail.com!" not in response.data
+    assert b"Welcome patkennedy79@hotmail.com!" not in response.data
+    assert b"[This field is required.]" not in response.data
+    assert b"Flask User Management" in response.data
+    assert b"Logout" not in response.data
+    assert b"Login" in response.data
+    assert b"Register" in response.data

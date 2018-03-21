@@ -37,7 +37,7 @@ def register():
         login_user(new_user)
         flash('Thanks for registering, {}!'.format(new_user.email))
         return redirect(url_for('users.profile'))
-    return render_template('users/register.html', form=form), 201
+    return render_template('users/register.html', form=form)
 
 
 @users_blueprint.route('/login', methods=['GET', 'POST'])
