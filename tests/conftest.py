@@ -3,6 +3,12 @@ from project import create_app, db
 from project.models import User
 
 
+@pytest.fixture(scope='module')
+def new_user():
+    user = User('patkennedy79@gmail.com', 'FlaskIsAwesome')
+    return user
+
+
 @pytest.fixture(scope='session')
 def test_client():
     flask_app = create_app('flask_test.cfg')
@@ -37,9 +43,3 @@ def init_database():
     yield db  # this is where the testing happens!
 
     db.drop_all()
-
-
-@pytest.fixture(scope='module')
-def new_user():
-    user = User('patkennedy79@gmail.com', 'FlaskIsAwesome')
-    return user
