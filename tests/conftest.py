@@ -9,7 +9,7 @@ def new_user():
     return user
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def test_client():
     flask_app = create_app('flask_test.cfg')
 
@@ -26,7 +26,7 @@ def test_client():
     ctx.pop()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def init_database():
     # Create the database and the database table
     db.create_all()
