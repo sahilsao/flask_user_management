@@ -13,21 +13,15 @@ def new_user():
 def test_client():
     flask_app = create_app('flask_test.cfg')
 
-    # Flask provides a way to test your application by exposing the Werkzeug test Client
-    # and handling the context locals for you.
-    testing_client = flask_app.test_client()
-
-    # Establish an application context before running the tests.
-    ctx = flask_app.app_context()
-    ctx.push()
-
-    yield testing_client  # this is where the testing happens!
-
-    ctx.pop()
+    # Create a test client using the Flask application configured for testing
+    with flask_app.test_client() as testing_client:
+        # Establish an application context
+        with flask_app.app_context():
+            yield testing_client  # this is where the testing happens!
 
 
 @pytest.fixture(scope='module')
-def init_database():
+def init_database(test_client):
     # Create the database and the database table
     db.create_all()
 
@@ -40,6 +34,6 @@ def init_database():
     # Commit the changes for the users
     db.session.commit()
 
-    yield db  # this is where the testing happens!
+    yield  # this is where the testing happens!
 
     db.drop_all()

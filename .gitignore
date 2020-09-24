@@ -13,12 +13,8 @@ __pycache__/
 instance/*_full.py
 instance/*.db
 
-# Initialization file for Postgress Docker Image
-/postgresql/Dockerfile
-
 # Coverage output
-/web/.coverage
-/web/htmlcov/
+.coverage
 
 # Virtual Environment
 /venv/

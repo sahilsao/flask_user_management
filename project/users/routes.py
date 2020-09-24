@@ -31,7 +31,6 @@ def register():
     form = RegisterForm()
     if request.method == 'POST' and form.validate_on_submit():
         new_user = User(form.email.data, form.password.data)
-        new_user.authenticated = True
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
@@ -53,7 +52,6 @@ def login():
         if form.validate_on_submit():
             user = User.query.filter_by(email=form.email.data).first()
             if user and user.is_correct_password(form.password.data):
-                user.authenticated = True
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=form.remember_me.data)
@@ -68,7 +66,6 @@ def login():
 @login_required
 def logout():
     user = current_user
-    user.authenticated = False
     db.session.add(user)
     db.session.commit()
     logout_user()

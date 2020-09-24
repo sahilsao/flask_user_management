@@ -64,7 +64,7 @@ Run development server to serve the Flask application:
 
 This application is written using Python 3.8.5.
 
-## Unit Testing
+## Testing
 
 ```sh
 (venv) $ pytest -v
