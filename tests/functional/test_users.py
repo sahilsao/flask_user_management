@@ -1,38 +1,14 @@
 """
-This file (test_users.py) contains the functional tests for the users blueprint.
+This file (test_users.py) contains the functional tests for the `users` blueprint.
 
 These tests use GETs and POSTs to different URLs to check for the proper behavior
-of the users blueprint.
+of the `users` blueprint.
 """
-
-
-def test_home_page(test_client):
-    """
-    GIVEN a Flask application
-    WHEN the '/' page is requested (GET)
-    THEN check the response is valid
-    """
-    response = test_client.get('/')
-    assert response.status_code == 200
-    assert b"Welcome to the Flask User Management Example!" in response.data
-    assert b"Need an account?" in response.data
-    assert b"Existing user?" in response.data
-
-
-def test_home_page_post(test_client):
-    """
-    GIVEN a Flask application
-    WHEN the '/' page is is posted to (POST)
-    THEN check that a '405' status code is returned
-    """
-    response = test_client.post('/')
-    assert response.status_code == 405
-    assert b"Welcome to the Flask User Management Example!" not in response.data
 
 
 def test_login_page(test_client):
     """
-    GIVEN a Flask application
+    GIVEN a Flask application configured for testing
     WHEN the '/login' page is requested (GET)
     THEN check the response is valid
     """
@@ -45,7 +21,7 @@ def test_login_page(test_client):
 
 def test_valid_login_logout(test_client, init_database):
     """
-    GIVEN a Flask application
+    GIVEN a Flask application configured for testing
     WHEN the '/login' page is posted to (POST)
     THEN check the response is valid
     """
@@ -61,7 +37,7 @@ def test_valid_login_logout(test_client, init_database):
     assert b"Register" not in response.data
 
     """
-    GIVEN a Flask application
+    GIVEN a Flask application configured for testing
     WHEN the '/logout' page is requested (GET)
     THEN check the response is valid
     """
@@ -76,7 +52,7 @@ def test_valid_login_logout(test_client, init_database):
 
 def test_invalid_login(test_client, init_database):
     """
-    GIVEN a Flask application
+    GIVEN a Flask application configured for testing
     WHEN the '/login' page is posted to with invalid credentials (POST)
     THEN check an error message is returned to the user
     """
@@ -93,7 +69,7 @@ def test_invalid_login(test_client, init_database):
 
 def test_valid_registration(test_client, init_database):
     """
-    GIVEN a Flask application
+    GIVEN a Flask application configured for testing
     WHEN the '/register' page is posted to (POST)
     THEN check the response is valid and the user is logged in
     """
@@ -111,7 +87,7 @@ def test_valid_registration(test_client, init_database):
     assert b"Register" not in response.data
 
     """
-    GIVEN a Flask application
+    GIVEN a Flask application configured for testing
     WHEN the '/logout' page is requested (GET)
     THEN check the response is valid
     """
@@ -126,7 +102,7 @@ def test_valid_registration(test_client, init_database):
 
 def test_invalid_registration(test_client, init_database):
     """
-    GIVEN a Flask application
+    GIVEN a Flask application configured for testing
     WHEN the '/register' page is posted to with invalid credentials (POST)
     THEN check an error message is returned to the user
     """
