@@ -14,6 +14,10 @@ def test_new_user():
     assert user.email == 'patkennedy79@gmail.com'
     assert user.hashed_password != 'FlaskIsAwesome'
     assert user.role == 'user'
+    assert user.__repr__() == '<User: patkennedy79@gmail.com>'
+    assert user.is_authenticated
+    assert user.is_active
+    assert not user.is_anonymous
 
 
 def test_new_user_with_fixture(new_user):
