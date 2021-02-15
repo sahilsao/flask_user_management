@@ -37,3 +37,14 @@ def init_database(test_client):
     yield  # this is where the testing happens!
 
     db.drop_all()
+
+
+@pytest.fixture(scope='function')
+def login_default_user(test_client):
+    test_client.post('/login',
+                     data=dict(email='patkennedy79@gmail.com', password='FlaskIsAwesome'),
+                     follow_redirects=True)
+
+    yield  # this is where the testing happens!
+
+    test_client.get('/logout', follow_redirects=True)
