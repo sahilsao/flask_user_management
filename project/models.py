@@ -1,6 +1,5 @@
 from project import db, bcrypt
 from datetime import datetime
-from flask import current_app
 
 
 class User(db.Model):
