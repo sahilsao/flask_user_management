@@ -8,11 +8,11 @@ def test_new_user():
     """
     GIVEN a User model
     WHEN a new User is created
-    THEN check the email, hashed_password, authenticated, and role fields are defined correctly
+    THEN check the email, password_hashed, authenticated, and role fields are defined correctly
     """
     user = User('patkennedy79@gmail.com', 'FlaskIsAwesome')
     assert user.email == 'patkennedy79@gmail.com'
-    assert user.hashed_password != 'FlaskIsAwesome'
+    assert user.password_hashed != 'FlaskIsAwesome'
     assert user.role == 'user'
     assert user.__repr__() == '<User: patkennedy79@gmail.com>'
     assert user.is_authenticated
@@ -24,10 +24,10 @@ def test_new_user_with_fixture(new_user):
     """
     GIVEN a User model
     WHEN a new User is created
-    THEN check the email, hashed_password, authenticated, and role fields are defined correctly
+    THEN check the email, password_hashed, authenticated, and role fields are defined correctly
     """
     assert new_user.email == 'patkennedy79@gmail.com'
-    assert new_user.hashed_password != 'FlaskIsAwesome'
+    assert new_user.password_hashed != 'FlaskIsAwesome'
     assert new_user.role == 'user'
 
 
@@ -38,10 +38,10 @@ def test_setting_password(new_user):
     THEN check the password is stored correctly and not as plaintext
     """
     new_user.set_password('MyNewPassword')
-    assert new_user.hashed_password != 'MyNewPassword'
-    assert new_user.is_correct_password('MyNewPassword')
-    assert not new_user.is_correct_password('MyNewPassword2')
-    assert not new_user.is_correct_password('FlaskIsAwesome')
+    assert new_user.password_hashed != 'MyNewPassword'
+    assert new_user.is_password_correct('MyNewPassword')
+    assert not new_user.is_password_correct('MyNewPassword2')
+    assert not new_user.is_password_correct('FlaskIsAwesome')
 
 
 def test_user_id(new_user):

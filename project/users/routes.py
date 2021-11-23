@@ -51,7 +51,7 @@ def login():
     if request.method == 'POST':
         if form.validate_on_submit():
             user = User.query.filter_by(email=form.email.data).first()
-            if user and user.is_correct_password(form.password.data):
+            if user and user.is_password_correct(form.password.data):
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=form.remember_me.data)

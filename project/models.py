@@ -1,5 +1,6 @@
-from project import db, bcrypt
+from project import db
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(db.Model):
@@ -8,7 +9,7 @@ class User(db.Model):
 
     The following attributes of a user are stored in this table:
         * email - email address of the user
-        * hashed password - hashed password (using Flask-Bcrypt)
+        * hashed password - hashed password (using werkzeug.security)
         * registered_on - date & time that the user registered
 
     REMEMBER: Never store the plaintext password in a database!
@@ -18,24 +19,28 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String, unique=True, nullable=False)
-    hashed_password = db.Column(db.String(60), nullable=False)
+    password_hashed = db.Column(db.String(128), nullable=False)
     registered_on = db.Column(db.DateTime, nullable=True)
     role = db.Column(db.String, default='user')
 
-    def __init__(self, email, plaintext_password, role='user'):
+    def __init__(self, email: str, password_plaintext: str, role='user'):
         """Create a new User object using the email address and hashing the
-        plaintext password using Bcrypt.
+        plaintext password using Werkzeug.Security.
         """
         self.email = email
-        self.hashed_password = bcrypt.generate_password_hash(plaintext_password).decode('utf-8')
+        self.password_hashed = self._generate_password_hash(password_plaintext)
         self.registered_on = datetime.now()
         self.role = role
 
-    def is_correct_password(self, plaintext_password: str):
-        return bcrypt.check_password_hash(self.hashed_password, plaintext_password)
+    def is_password_correct(self, password_plaintext: str):
+        return check_password_hash(self.password_hashed, password_plaintext)
 
-    def set_password(self, plaintext_password):
-        self.hashed_password = bcrypt.generate_password_hash(plaintext_password).decode('utf-8')
+    def set_password(self, password_plaintext: str):
+        self.password_hashed = self._generate_password_hash(password_plaintext)
+
+    @staticmethod
+    def _generate_password_hash(password_plaintext):
+        return generate_password_hash(password_plaintext)
 
     def __repr__(self):
         return f'<User: {self.email}>'
