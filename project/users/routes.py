@@ -65,9 +65,6 @@ def login():
 @users_blueprint.route('/logout')
 @login_required
 def logout():
-    user = current_user
-    db.session.add(user)
-    db.session.commit()
     logout_user()
     flash('Goodbye!')
     return redirect(url_for('recipes.index'))
