@@ -30,7 +30,6 @@ def test_valid_login_logout(test_client, init_database):
                                 follow_redirects=True)
     assert response.status_code == 200
     assert b'Thanks for logging in, patkennedy79@gmail.com!' in response.data
-    assert b'Welcome patkennedy79@gmail.com!' in response.data
     assert b'Flask User Management' in response.data
     assert b'Logout' in response.data
     assert b'Login' not in response.data
@@ -97,7 +96,6 @@ def test_valid_registration(test_client, init_database):
                                 follow_redirects=True)
     assert response.status_code == 200
     assert b'Thanks for registering, patkennedy79@yahoo.com!' in response.data
-    assert b'Welcome patkennedy79@yahoo.com!' in response.data
     assert b'Flask User Management' in response.data
     assert b'Logout' in response.data
     assert b'Login' not in response.data
@@ -130,7 +128,6 @@ def test_invalid_registration(test_client, init_database):
                                 follow_redirects=True)
     assert response.status_code == 200
     assert b'Thanks for registering, patkennedy79@hotmail.com!' not in response.data
-    assert b'Welcome patkennedy79@hotmail.com!' not in response.data
     assert b'[This field is required.]' not in response.data
     assert b'Flask User Management' in response.data
     assert b'Logout' not in response.data
@@ -159,7 +156,6 @@ def test_duplicate_registration(test_client, init_database):
     assert response.status_code == 200
     assert b'Already registered!  Redirecting to your User Profile page...' in response.data
     assert b'Thanks for registering, pkennedy@hey.com!' not in response.data
-    assert b'Welcome pkennedy@hey.com!' in response.data
     assert b'Flask User Management' in response.data
     assert b'Logout' in response.data
     assert b'Login' not in response.data
