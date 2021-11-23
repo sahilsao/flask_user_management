@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_bcrypt import Bcrypt
 
 
 #######################
@@ -12,7 +11,6 @@ from flask_bcrypt import Bcrypt
 # the global scope, but without any arguments passed in.  These instances are not attached
 # to the application at this point.
 db = SQLAlchemy()
-bcrypt = Bcrypt()
 login = LoginManager()
 login.login_view = "users.login"
 
@@ -37,7 +35,6 @@ def initialize_extensions(app):
     # Since the application instance is now created, pass it to each Flask
     # extension instance to bind it to the Flask application instance (app)
     db.init_app(app)
-    bcrypt.init_app(app)
     login.init_app(app)
 
     # Flask-Login configuration
