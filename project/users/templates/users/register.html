@@ -1,33 +1,42 @@
 {% extends "base.html" %}
 
-{% set title = 'User Registration' %}
+{% block styling %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form_users_style.css') }}">
+{% endblock %}
 
 {% block content %}
-    <br>
-    <h1>Register</h1>
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.email.label }}<br>
-            {{ form.email(size=64) }}<br>
-            {% for error in form.email.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=40) }}<br>
-            {% for error in form.password.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.confirm.label }}<br>
-            {{ form.confirm(size=40) }}<br>
-            {% for error in form.confirm.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
+<div class="form-wrap">
+  <form class="form" method="post">
+    {{ form.csrf_token }}
+
+    <h1 class="form__title">User Registration</h1>
+
+    <div class="form__group">
+      <input type="text" id="email" name="email" class="form__input" placeholder=" " autocomplete="on" required>
+      <label for="email" class="form__label">Email</label>
+      {% for error in form.email.errors %}
+        <p class="validation-error">[{{ error }}]</p>
+      {% endfor %}
+    </div>
+
+    <div class="form__group">
+      <input type="password" id="password" name="password" class="form__input" placeholder=" " required>
+      <label for="password" class="form__label">Password</label>
+      {% for error in form.password.errors %}
+        <p class="validation-error">[{{ error }}]</p>
+      {% endfor %}
+    </div>
+
+    <div class="form__group">
+      <input type="password" id="confirm" name="confirm" class="form__input" placeholder=" " required>
+      <label for="confirm" class="form__label">Confirm Password</label>
+      {% for error in form.confirm.errors %}
+        <p class="validation-error">[{{ error }}]</p>
+      {% endfor %}
+    </div>
+
+    <button type="submit" class="form__button">Register</button>
+  </form>
+</div>
 {% endblock %}
+
