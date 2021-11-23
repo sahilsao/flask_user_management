@@ -12,22 +12,14 @@ For details on how to test a Flask app using pytest, check out my blog post on [
 
 After reading [Python Testing with pytest](https://pragprog.com/titles/bopytest/python-testing-with-pytest/) by Brian Okken, I was convinced that I should learn about pytest and then figure out how to use it to test Flask applications.
 
-## How to Run
-
-In the top-level directory:
-
-```sh
-$ export FLASK_APP=app.py
-$ export FLASK_ENV=development
-$ flask run
-```
-
 ## Installation Instructions
+
+### Installation
 
 Pull down the source code from this GitLab repository:
 
 ```sh
-$ git clone git@gitlab.com:patkennedy79/flask_user_management_example.git```
+$ git clone git@gitlab.com:patkennedy79/flask_user_management_example.git
 ```
 
 Create a new virtual environment:
@@ -43,11 +35,26 @@ Activate the virtual environment:
 $ source venv/bin/activate
 ```
 
-Install the python packages in requirements.txt:
+Install the python packages specified in requirements.txt:
 
 ```sh
 (venv) $ pip install -r requirements.txt
 ```
+
+### Database Initialization
+
+This Flask application needs a SQLite database to store data.  The database should be initialized via the Flask shell:
+
+```
+(venv) $ flask shell
+>>> from project import db
+>>> db.drop_all()
+>>> db.create_all()
+>>> quit()
+(venv) $
+```
+
+### Running the Flask Application
 
 Set the file that contains the Flask application and specify that the development environment should be used:
 
@@ -62,19 +69,23 @@ Run development server to serve the Flask application:
 (venv) $ flask run
 ```
 
-Navigate to 'http://localhost:5000' to view the website!
+Navigate to 'http://localhost:5000' in your favorite web browser to view the website!
 
 ## Key Python Modules Used
 
-* Flask: micro-framework for web application development
-* pytest: framework for testing Python projects
-* Jinga2 - templating engine
-* SQLAlchemy - ORM (Object Relational Mapper)
-* Flask-Bcrypt - password hashing
-* Flask-Login - support for user management
-* Flask-WTF - simplifies forms
+* **Flask**: micro-framework for web application development which includes the following dependencies:
+  * click: package for creating command-line interfaces (CLI)
+  * itsdangerous: cryptographically sign data 
+  * Jinja2: templating engine
+  * MarkupSafe: escapes characters so text is safe to use in HTML and XML
+  * Werkzeug: set of utilities for creating a Python application that can talk to a WSGI server
+* **pytest**: framework for testing Python projects
+* **Flask-SQLAlchemy** - ORM (Object Relational Mapper) for Flask
+* **Flask-Login** - support for user management (login/logout) in Flask
+* **Flask-WTF** - simplifies forms in Flask
+* **flake8** - static analysis tool
 
-This application is written using Python 3.9.
+This application is written using Python 3.10.
 
 ## Testing
 
