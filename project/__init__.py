@@ -1,3 +1,4 @@
+import os
 from click import echo
 from flask import Flask
 from flask_login import LoginManager
@@ -32,8 +33,13 @@ login.login_view = "users.login"
 # ----------------------------
 
 def create_app(config_filename=None):
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_pyfile(config_filename)
+    # Create the Flask application
+    app = Flask(__name__)
+
+    # Configure the Flask application
+    config_type = os.getenv('CONFIG_TYPE', default='config.DevelopmentConfig')
+    app.config.from_object(config_type)
+
     initialize_extensions(app)
     register_blueprints(app)
     register_cli_commands(app)
