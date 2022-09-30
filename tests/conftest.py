@@ -4,6 +4,10 @@ from project import create_app, db
 from project.models import User
 
 
+# --------
+# Fixtures
+# --------
+
 @pytest.fixture(scope='module')
 def new_user():
     user = User('patkennedy79@gmail.com', 'FlaskIsAwesome')
@@ -51,3 +55,13 @@ def login_default_user(test_client):
     yield  # this is where the testing happens!
 
     test_client.get('/logout', follow_redirects=True)
+
+
+@pytest.fixture(scope='module')
+def cli_test_client():
+    flask_app = create_app()
+    flask_app.config.from_object('config.TestingConfig')
+
+    runner = flask_app.test_cli_runner()
+
+    yield runner  # this is where the testing happens!
