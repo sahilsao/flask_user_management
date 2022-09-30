@@ -1,11 +1,14 @@
+import os
+
+from click import echo
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 
 
-#######################
-#### Configuration ####
-#######################
+# -------------
+# Configuration
+# -------------
 
 # Create the instances of the Flask extensions (flask-sqlalchemy, flask-login, etc.) in
 # the global scope, but without any arguments passed in.  These instances are not attached
@@ -15,21 +18,27 @@ login = LoginManager()
 login.login_view = "users.login"
 
 
-######################################
-#### Application Factory Function ####
-######################################
+# ----------------------------
+# Application Factory Function
+# ----------------------------
 
 def create_app(config_filename=None):
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_pyfile(config_filename)
+    # Create the Flask application
+    app = Flask(__name__)
+
+    # Configure the Flask application
+    config_type = os.getenv('CONFIG_TYPE', default='config.DevelopmentConfig')
+    app.config.from_object(config_type)
+
     initialize_extensions(app)
     register_blueprints(app)
+    register_cli_commands(app)
     return app
 
 
-##########################
-#### Helper Functions ####
-##########################
+# ----------------
+# Helper Functions
+# ----------------
 
 def initialize_extensions(app):
     # Since the application instance is now created, pass it to each Flask
@@ -53,3 +62,12 @@ def register_blueprints(app):
 
     app.register_blueprint(recipes_blueprint)
     app.register_blueprint(users_blueprint)
+
+
+def register_cli_commands(app):
+    @app.cli.command('init_db')
+    def initialize_database():
+        """Initialize the SQLite database."""
+        db.drop_all()
+        db.create_all()
+        echo('Initializing the SQLite database!')

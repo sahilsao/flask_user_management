@@ -25,12 +25,29 @@ before_script:
 
 stages:
   - Static Analysis
+  - Security
   - Test
 
 flake8:
   stage: Static Analysis
   script:
-  - flake8 --max-line-length=150 --ignore=E266 *.py project/*.py project/*/routes.py project/*/forms.py
+  - python -m flake8 --max-line-length=150 --max-complexity 5 *.py project/*.py project/*/routes.py
+
+isort:
+  stage: Static Analysis
+  script:
+  - python -m isort . --lines-after-imports 2 --check-only
+
+bandit:
+  stage: Security
+  script:
+    - bandit project/models.py
+    - bandit project/*/*.py
+
+safety:
+  stage: Security
+  script:
+  - safety check
 
 pytest:
   stage: Test
@@ -39,6 +56,6 @@ pytest:
 
 coverage:
   stage: Test
-  allow_failure: true
   script:
   - python -m pytest --cov-report term-missing --cov=project
+  coverage: '/^TOTAL.+?(\d+\%)$/'
