@@ -3,27 +3,16 @@ from click import echo
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
 
 
 # -------------
 # Configuration
 # -------------
 
-# Create a naming convention for the database tables
-convention = {
-    "ix": 'ix_%(column_0_label)s',
-    "uq": "uq_%(table_name)s_%(column_0_name)s",
-    "ck": "ck_%(table_name)s_%(constraint_name)s",
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s"
-}
-metadata = MetaData(naming_convention=convention)
-
 # Create the instances of the Flask extensions (flask-sqlalchemy, flask-login, etc.) in
 # the global scope, but without any arguments passed in.  These instances are not attached
 # to the application at this point.
-db = SQLAlchemy(metadata=metadata)
+db = SQLAlchemy()
 login = LoginManager()
 login.login_view = "users.login"
 
