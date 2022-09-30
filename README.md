@@ -43,15 +43,10 @@ Install the python packages specified in requirements.txt:
 
 ### Database Initialization
 
-This Flask application needs a SQLite database to store data.  The database should be initialized via the Flask shell:
+This Flask application needs a SQLite database to store data.  The database should be initialized using:
 
 ```
-(venv) $ flask shell
->>> from project import db
->>> db.drop_all()
->>> db.create_all()
->>> quit()
-(venv) $
+(venv) $ flask init_db
 ```
 
 ### Running the Flask Application
