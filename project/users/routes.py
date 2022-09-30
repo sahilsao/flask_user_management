@@ -2,13 +2,14 @@
 #### imports ####
 #################
 
-from flask import render_template, request, flash, redirect, url_for
-from flask_login import login_user, current_user, login_required, logout_user
+from flask import flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_required, login_user, logout_user
+
+from project import db
+from project.models import User
 
 from . import users_blueprint
-from .forms import RegisterForm, LoginForm
-from project.models import User
-from project import db
+from .forms import LoginForm, RegisterForm
 
 
 ################

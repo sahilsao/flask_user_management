@@ -1,7 +1,7 @@
 from click import echo
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 
 
