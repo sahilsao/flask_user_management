@@ -1,7 +1,3 @@
-#################
-#### imports ####
-#################
-
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
@@ -12,9 +8,9 @@ from . import users_blueprint
 from .forms import LoginForm, RegisterForm
 
 
-################
-#### routes ####
-################
+# ------
+# Routes
+# ------
 
 @users_blueprint.route('/profile')
 @login_required
