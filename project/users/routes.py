@@ -1,6 +1,8 @@
-from flask import flash, redirect, render_template, request, url_for, current_app
-from flask_login import current_user, login_required, login_user, logout_user
 import os
+
+from flask import (current_app, flash, redirect, render_template, request,
+                   url_for)
+from flask_login import current_user, login_required, login_user, logout_user
 
 from project import db
 from project.models import User

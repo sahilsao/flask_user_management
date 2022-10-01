@@ -1,13 +1,13 @@
 import logging
 import os
-import sqlalchemy as sa
+from logging.handlers import RotatingFileHandler
 
+import sqlalchemy as sa
 from click import echo
 from flask import Flask
+from flask.logging import default_handler
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from logging.handlers import RotatingFileHandler
-from flask.logging import default_handler
 
 
 # -------------
