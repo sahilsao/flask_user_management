@@ -9,9 +9,10 @@ __pycache__/
 # PyCharm files
 .idea/
 
-# Instance Folder - used for configuration parameters
+# Instance Folder
 instance/*_full.py
 instance/*.db
+instance/*.log*
 
 # Coverage output
 .coverage
