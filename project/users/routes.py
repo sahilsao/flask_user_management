@@ -1,5 +1,6 @@
-from flask import flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for, current_app
 from flask_login import current_user, login_required, login_user, logout_user
+import os
 
 from project import db
 from project.models import User
@@ -28,6 +29,11 @@ def register():
     form = RegisterForm()
     if request.method == 'POST' and form.validate_on_submit():
         new_user = User(form.email.data, form.password.data)
+
+        current_app.logger.info(f"DEBUG001... DATABASE_URL environment variable: {os.getenv('DATABASE_URL')}")
+        current_app.logger.info(f"DEBUG002... CONFIG_TYPE environment variable: {os.getenv('CONFIG_TYPE')}")
+        current_app.logger.info(f"DEBUG003... SQLALCHEMY_DATABASE_URI: {current_app.config['SQLALCHEMY_DATABASE_URI']}")
+
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
