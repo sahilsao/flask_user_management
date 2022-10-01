@@ -11,4 +11,4 @@ def test_initialize_database(cli_test_client):
     """
     output = cli_test_client.invoke(args=['init_db'])
     assert output.exit_code == 0
-    assert 'Initializing the SQLite database!' in output.output
+    assert 'Initialized the database!' in output.output
