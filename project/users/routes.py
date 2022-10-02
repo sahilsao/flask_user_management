@@ -91,4 +91,3 @@ def status():
         log_to_stdout=os.getenv('LOG_TO_STDOUT'),
         database_initialized=inspector.has_table("users")
     )
-
