@@ -1,5 +1,6 @@
 import os
 
+import sqlalchemy as sa
 from flask import (current_app, flash, redirect, render_template, request,
                    url_for)
 from flask_login import current_user, login_required, login_user, logout_user
@@ -74,3 +75,20 @@ def logout():
     logout_user()
     flash('Goodbye!')
     return redirect(url_for('recipes.index'))
+
+
+@users_blueprint.route('/status')
+def status():
+    # Check if the database needs to be initialized
+    engine = sa.create_engine(current_app.config['SQLALCHEMY_DATABASE_URI'])
+    inspector = sa.inspect(engine)
+
+    return render_template(
+        'users/status.html',
+        database_url=os.getenv('DATABASE_URL'),
+        config_type=os.getenv('CONFIG_TYPE'),
+        sqlalchemy_database_uri=current_app.config['SQLALCHEMY_DATABASE_URI'],
+        log_to_stdout=os.getenv('LOG_TO_STDOUT'),
+        database_initialized=inspector.has_table("users")
+    )
+
