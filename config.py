@@ -18,7 +18,7 @@ class Config(object):
         SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(BASEDIR, 'instance', 'app.db')}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Logging
-    LOG_TO_STDOUT = os.getenv('LOG_TO_STDOUT', default=False)
+    LOG_WITH_GUNICORN = os.getenv('LOG_WITH_GUNICORN', default=False)
 
 
 class ProductionConfig(Config):
