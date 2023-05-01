@@ -72,6 +72,9 @@ Navigate to 'http://127.0.0.1:5000' in your favorite web browser to view the web
 * **Flask-Login** - support for user management (login/logout) in Flask
 * **Flask-WTF** - simplifies forms in Flask
 * **flake8** - static analysis tool
+* **isort** - sorts Python package imports
+* **safety** - checks Python dependencies for known security vulnerabilities
+* **bandit** - tool designed to find common security issues in Python code
 
 This application is written using Python 3.10.
 
