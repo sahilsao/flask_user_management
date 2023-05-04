@@ -51,8 +51,7 @@ table a {
 }
 
 .books-actions {
-  display: flex;
-  justify-content: space-around;
+  display: block;
 }
 
 .books-actions-link + .books-actions-link {
