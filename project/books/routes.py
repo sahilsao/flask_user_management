@@ -64,7 +64,7 @@ def add_book():
             db.session.add(new_book)
             db.session.commit()
 
-            flash(f"Added new book ({new_book.title})!", 'success')
+            flash(f"Added new book ({new_book.title})!")
             current_app.logger.info(f'Book ({new_book.title}) was added for user: {current_user.id}!')
             return redirect(url_for('books.list_books'))
         except ValidationError as e:
@@ -87,7 +87,7 @@ def delete_book(id):
 
     db.session.delete(book)
     db.session.commit()
-    flash(f'Book ({book.title}) was deleted!', 'success')
+    flash(f'Book ({book.title}) was deleted!')
     current_app.logger.info(f'Book ({book.title}) was deleted for user: {current_user.id}!')
     return redirect(url_for('books.list_books'))
 
@@ -112,7 +112,7 @@ def edit_book(id):
         db.session.add(book)
         db.session.commit()
 
-        flash(f'Book ({ book.title }) was updated!', 'success')
+        flash(f'Book ({ book.title }) was updated!')
         current_app.logger.info(f'Book ({ book.title }) was updated by user: { current_user.id}')
         return redirect(url_for('books.list_books'))
 

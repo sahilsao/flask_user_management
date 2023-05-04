@@ -4,6 +4,7 @@ import sqlalchemy as sa
 from flask import (current_app, flash, redirect, render_template, request,
                    url_for)
 from flask_login import current_user, login_required, login_user, logout_user
+from sqlalchemy.exc import IntegrityError
 
 from project import db
 from project.models import User
@@ -26,18 +27,22 @@ def profile():
 def register():
     # If the User is already logged in, don't allow them to try to register
     if current_user.is_authenticated:
-        flash('Already registered!  Redirecting to your User Profile page...')
+        flash('Already logged in!  Redirecting to your User Profile page...')
         return redirect(url_for('users.profile'))
 
     form = RegisterForm()
     if request.method == 'POST' and form.validate_on_submit():
-        new_user = User(form.email.data, form.password.data)
-        db.session.add(new_user)
-        db.session.commit()
+        try:
+            new_user = User(form.email.data, form.password.data)
+            db.session.add(new_user)
+            db.session.commit()
 
-        login_user(new_user)
-        flash('Thanks for registering, {}!'.format(new_user.email))
-        return redirect(url_for('books.index'))
+            login_user(new_user)
+            flash(f'Thank you for registering, {new_user.email}!')
+            return redirect(url_for('books.index'))
+        except IntegrityError:
+            db.session.rollback()
+            flash(f'ERROR! Email ({new_user.email}) already exists in the database.')
     return render_template('users/register.html', form=form)
 
 
@@ -57,7 +62,7 @@ def login():
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=form.remember_me.data)
-                flash('Thanks for logging in, {}!'.format(current_user.email))
+                flash('Thank you for logging in, {}!'.format(current_user.email))
                 return redirect(url_for('books.index'))
 
         flash('ERROR! Incorrect login credentials.')
