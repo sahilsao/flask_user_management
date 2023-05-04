@@ -34,7 +34,7 @@ def test_home_page_post():
     """
     GIVEN a Flask application configured for testing
     WHEN the '/' page is posted to (POST)
-    THEN check that a '405' status code is returned
+    THEN check that a '405' (Method Not Allowed) status code is returned
     """
     # Set the Testing configuration prior to creating the Flask application
     os.environ['CONFIG_TYPE'] = 'config.TestingConfig'
@@ -64,8 +64,8 @@ def test_home_page_with_fixture(test_client):
 def test_home_page_post_with_fixture(test_client):
     """
     GIVEN a Flask application configured for testing
-    WHEN the '/' page is is posted to (POST)
-    THEN check that a '405' status code is returned
+    WHEN the '/' page is posted to (POST)
+    THEN check that a '405' (Method Not Allowed) status code is returned
     """
     response = test_client.post('/')
     assert response.status_code == 405
