@@ -18,9 +18,10 @@
     <body>
         <header class="site-header">
             <nav class="nav">
-                <a class="nav-link logo" href="{{ url_for('recipes.index') }}">Flask User Management</a>
+                <a class="nav-link logo" href="{{ url_for('books.index') }}">Flask User Management</a>
                 <ul class="nav-list">
                 {% if current_user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('books.list_books') }}">Books</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('users.profile') }}">Profile</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a></li>
                 {% else %}
@@ -51,7 +52,7 @@
         </main>
 
         <footer class="site-footer">
-            <small><a href="http://www.patricksoftwareblog.com">Patrick Kennedy - 2022</small>
+            <small>Created by <a href="http://www.patricksoftwareblog.com">Patrick Kennedy</small>
         </footer>
     </body>
 </html>

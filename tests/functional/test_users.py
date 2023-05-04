@@ -66,7 +66,7 @@ def test_invalid_login(test_client, init_database):
     assert b'Register' in response.data
 
 
-def test_login_already_logged_in(test_client, init_database, login_default_user):
+def test_login_already_logged_in(test_client, init_database, log_in_default_user):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/login' page is posted to (POST) when the user is already logged in

@@ -1,7 +1,9 @@
+import os
+
 import pytest
 
 from project import create_app, db
-from project.models import User
+from project.models import Book, User
 
 
 # --------
@@ -16,9 +18,9 @@ def new_user():
 
 @pytest.fixture(scope='module')
 def test_client():
-    # Create a Flask app configured for testing
+    # Set the Testing configuration prior to creating the Flask application
+    os.environ['CONFIG_TYPE'] = 'config.TestingConfig'
     flask_app = create_app()
-    flask_app.config.from_object('config.TestingConfig')
 
     # Create a test client using the Flask application configured for testing
     with flask_app.test_client() as testing_client:
@@ -33,12 +35,23 @@ def init_database(test_client):
     db.create_all()
 
     # Insert user data
-    user1 = User(email='patkennedy79@gmail.com', password_plaintext='FlaskIsAwesome')
-    user2 = User(email='kennedyfamilyrecipes@gmail.com', password_plaintext='PaSsWoRd')
-    db.session.add(user1)
-    db.session.add(user2)
+    default_user = User(email='patkennedy79@gmail.com', password_plaintext='FlaskIsAwesome')
+    second_user = User(email='patrick@yahoo.com', password_plaintext='FlaskIsTheBest987')
+    db.session.add(default_user)
+    db.session.add(second_user)
 
     # Commit the changes for the users
+    db.session.commit()
+
+    # Insert book data
+    book1 = Book('Malibu Rising', 'Taylor Jenkins Reid', '5', default_user.id)
+    book2 = Book('Carrie Soto is Back', 'Taylor Jenkins Reid', '4', default_user.id)
+    book3 = Book('Book Lovers', 'Emily Henry', '3', default_user.id)
+    db.session.add(book1)
+    db.session.add(book2)
+    db.session.add(book3)
+
+    # Commit the changes for the books
     db.session.commit()
 
     yield  # this is where the testing happens!
@@ -47,20 +60,31 @@ def init_database(test_client):
 
 
 @pytest.fixture(scope='function')
-def login_default_user(test_client):
+def log_in_default_user(test_client):
     test_client.post('/login',
-                     data=dict(email='patkennedy79@gmail.com', password='FlaskIsAwesome'),
-                     follow_redirects=True)
+                     data={'email': 'patkennedy79@gmail.com', 'password': 'FlaskIsAwesome'})
 
     yield  # this is where the testing happens!
 
-    test_client.get('/logout', follow_redirects=True)
+    test_client.get('/logout')
+
+
+@pytest.fixture(scope='function')
+def log_in_second_user(test_client):
+    test_client.post('login',
+                     data={'email': 'patrick@yahoo.com','password': 'FlaskIsTheBest987'})
+
+    yield   # this is where the testing happens!
+
+    # Log out the user
+    test_client.get('/logout')
 
 
 @pytest.fixture(scope='module')
 def cli_test_client():
+    # Set the Testing configuration prior to creating the Flask application
+    os.environ['CONFIG_TYPE'] = 'config.TestingConfig'
     flask_app = create_app()
-    flask_app.config.from_object('config.TestingConfig')
 
     runner = flask_app.test_cli_runner()
 

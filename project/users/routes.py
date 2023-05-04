@@ -32,17 +32,12 @@ def register():
     form = RegisterForm()
     if request.method == 'POST' and form.validate_on_submit():
         new_user = User(form.email.data, form.password.data)
-
-        current_app.logger.info(f"DEBUG001... DATABASE_URL environment variable: {os.getenv('DATABASE_URL')}")
-        current_app.logger.info(f"DEBUG002... CONFIG_TYPE environment variable: {os.getenv('CONFIG_TYPE')}")
-        current_app.logger.info(f"DEBUG003... SQLALCHEMY_DATABASE_URI: {current_app.config['SQLALCHEMY_DATABASE_URI']}")
-        current_app.logger.info(f"DEBUG004... LOG_TO_STDOUT environment variable: {os.getenv('LOG_TO_STDOUT')}")
-
         db.session.add(new_user)
         db.session.commit()
+
         login_user(new_user)
         flash('Thanks for registering, {}!'.format(new_user.email))
-        return redirect(url_for('users.profile'))
+        return redirect(url_for('books.index'))
     return render_template('users/register.html', form=form)
 
 
@@ -63,7 +58,7 @@ def login():
                 db.session.commit()
                 login_user(user, remember=form.remember_me.data)
                 flash('Thanks for logging in, {}!'.format(current_user.email))
-                return redirect(url_for('users.profile'))
+                return redirect(url_for('books.index'))
 
         flash('ERROR! Incorrect login credentials.')
     return render_template('users/login.html', form=form)
@@ -74,7 +69,7 @@ def login():
 def logout():
     logout_user()
     flash('Goodbye!')
-    return redirect(url_for('recipes.index'))
+    return redirect(url_for('books.index'))
 
 
 @users_blueprint.route('/status')
