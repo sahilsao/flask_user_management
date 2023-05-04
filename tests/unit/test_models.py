@@ -1,7 +1,7 @@
 """
 This file (test_models.py) contains the unit tests for the models.py file.
 """
-from project.models import User
+from project.models import Book, User
 
 
 def test_new_user():
@@ -52,3 +52,45 @@ def test_user_id(new_user):
     assert isinstance(new_user.get_id(), str)
     assert not isinstance(new_user.get_id(), int)
     assert new_user.get_id() == '17'
+
+
+def test_new_book():
+    """
+    GIVEN a Book model
+    WHEN a new Book is created
+    THEN check the title, author, and rating fields are defined correctly
+    """
+    book = Book('Malibu Rising', 'Taylor Jenkins Reid', '5', 1)
+    assert book.title == 'Malibu Rising'
+    assert book.author == 'Taylor Jenkins Reid'
+    assert book.rating == 5
+    assert book.__repr__() == '<Book: Malibu Rising>'
+
+
+def test_update_book():
+    """
+    GIVEN a Book model
+    WHEN a new Book is updated
+    THEN check the title, author, and rating fields are updated correctly
+    """
+    book = Book('Malibu Rising', 'Taylor Jenkins Reid', '5', 1)
+
+    book.update(new_title='Carrie Soto is Back')
+    assert book.title == 'Carrie Soto is Back'
+    assert book.author == 'Taylor Jenkins Reid'
+    assert book.rating == 5
+
+    book.update(new_rating='4')
+    assert book.title == 'Carrie Soto is Back'
+    assert book.author == 'Taylor Jenkins Reid'
+    assert book.rating == 4
+
+    book.update(new_author='Taylor J. Reid')
+    assert book.title == 'Carrie Soto is Back'
+    assert book.author == 'Taylor J. Reid'
+    assert book.rating == 4
+
+    book.update(new_title='Book Lovers', new_author='Emily Henry', new_rating='5')
+    assert book.title == 'Book Lovers'
+    assert book.author == 'Emily Henry'
+    assert book.rating == 5
