@@ -77,12 +77,14 @@ def status():
     # Check if the database needs to be initialized
     engine = sa.create_engine(current_app.config['SQLALCHEMY_DATABASE_URI'])
     inspector = sa.inspect(engine)
+    users_table_created = inspector.has_table("users")
+    books_table_created = inspector.has_table("books")
+    database_created = users_table_created and books_table_created
 
     return render_template(
         'users/status.html',
-        database_url=os.getenv('DATABASE_URL'),
         config_type=os.getenv('CONFIG_TYPE'),
-        sqlalchemy_database_uri=current_app.config['SQLALCHEMY_DATABASE_URI'],
-        log_to_stdout=os.getenv('LOG_TO_STDOUT'),
-        database_initialized=inspector.has_table("users")
+        database_status=database_created,
+        database_users_table_status=users_table_created,
+        database_books_table_status=books_table_created
     )

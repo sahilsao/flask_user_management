@@ -160,3 +160,18 @@ def test_duplicate_registration(test_client, init_database):
     assert b'Logout' in response.data
     assert b'Login' not in response.data
     assert b'Register' not in response.data
+
+
+def test_status_page(test_client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the '/status' page is requested (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/status')
+    assert response.status_code == 200
+    assert b'Web Application: Active' in response.data
+    assert b'Configuration Type: config.TestingConfig' in response.data
+    assert b'Database initialized: True' in response.data
+    assert b'Database `users` table created: True' in response.data
+    assert b'Database `books` table created: True' in response.data
