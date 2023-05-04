@@ -121,6 +121,23 @@ def test_post_add_book_page(test_client, log_in_default_user):
     assert b'Added new book (The Guest List)!' in response.data
 
 
+def test_post_add_book_page_invalid_book_rating(test_client, log_in_default_user):
+    """"
+    GIVEN a Flask application configured for testing and the user logged in
+    WHEN the '/books/add' page is posted to (POST) with an invalid rating for the book
+    THEN check that an error message is displayed to the user
+    """
+    response = test_client.post('/books/add',
+                                data={'book_title': 'The Guest List',
+                                      'book_author': 'Lucy Foley',
+                                      'book_rating': '6'},  # Invalid! Needs to be between 1-5
+                                follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Error with book data submitted!' in response.data
+    assert b'Books' in response.data
+    assert b'Added new book (The Guest List)!' not in response.data
+
+
 def test_post_add_book_page_not_logged_in(test_client):
     """
     GIVEN a Flask application configured for testing

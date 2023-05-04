@@ -68,6 +68,7 @@ def add_book():
             current_app.logger.info(f'Book ({new_book.title}) was added for user: {current_user.id}!')
             return redirect(url_for('books.list_books'))
         except ValidationError as e:
+            flash("Error with book data submitted!")
             print(e)
 
     return render_template('books/add_book.html')
