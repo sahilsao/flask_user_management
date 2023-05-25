@@ -6,8 +6,6 @@ For details on how to test a Flask app using pytest, check out my blog post on [
 
 * [https://testdriven.io/blog/flask-pytest/](https://testdriven.io/blog/flask-pytest/)
 
-![Testing Flask Applications with Pytest](project/static/img/flask_pytest_social.png?raw=true "Testing Flask Applications with Pytest")
-
 ## Motivation
 
 After reading [Python Testing with pytest](https://pragprog.com/titles/bopytest/python-testing-with-pytest/) by Brian Okken, I was convinced that I should learn about pytest and then figure out how to use it to test Flask applications.
